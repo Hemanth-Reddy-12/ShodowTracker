@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 // eslint-disable-next-line no-unused-vars
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 import Home from "./pages/Home.jsx";
 import Verify from "./pages/Verify.jsx";
 import Airdrop from "./pages/Airdrop.jsx";
