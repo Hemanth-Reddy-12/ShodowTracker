@@ -1,0 +1,54 @@
+/* * tailwind import */
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&display=swap');
+
+@theme {
+    --font-family-aladin: 'Cascadia Mono', cursive;
+}
+
+body {
+    font-family: var(--font-family-aladin);
+}
+
+.container {
+    @apply px-4 sm:px-6 md:px-8 lg:px-[250px] xl:px-[300px] mx-auto max-w-[1800px] w-full;
+}
+
+.content-container {
+    @apply px-4 md:px-8 lg:px-[150px] xl:px-[300px] mx-auto;
+}
+
+.background {
+    @apply bg-[#F9F7F7];
+}
+
+@layer components {
+    .socialicon {
+        @apply size-[50px] md:size-[80px];
+    }
+
+    .socialicon-tooltip {
+        @apply hidden md:block scale-0 transition-all duration-100 text-2xl font-[800];
+    }
+
+    .button {
+        @apply hover:underline select-none cursor-pointer hover:scale-110 transition-all duration-100;
+    }
+
+    .search {
+        @apply rounded-lg px-5 py-2 text-xl bg-[#c5c9c9] w-[300px];
+    }
+
+    .input {
+        @apply rounded-md shadow text-xl text-center border;
+    }
+}
+
+.card {
+    @apply flex justify-center items-center w-[150px] h-[150px] bg-[#F5F5F5] rounded-2xl;
+}
+
+.active {
+    @apply bg-[#c5c9c9];
+}
