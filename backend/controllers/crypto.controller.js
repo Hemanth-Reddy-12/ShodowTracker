@@ -44,6 +44,7 @@ export const addProject = async (req, res) => {
 export const getProjects = async (req, res) => {
   try {
     const project = await AirdropProject.find();
+    console.log(project);
     res.status(200).send({
       status: true,
       msg: "List of Crypto Projects 🚀",

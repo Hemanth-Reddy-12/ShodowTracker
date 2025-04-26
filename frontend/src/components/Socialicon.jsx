@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa6";
 import { SiFarcaster } from "react-icons/si";
 // eslint-disable-next-line no-unused-vars
-import { AnimatePresence, motion } from "motion/react";
+import { motion } from "framer-motion";
 
 const Socialicon = () => {
   const Socialdata = [

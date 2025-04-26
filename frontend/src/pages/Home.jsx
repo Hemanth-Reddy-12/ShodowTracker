@@ -1,6 +1,6 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion } from "framer-motion";
 import Socialicon from "../components/Socialicon";
 import { useNavigate } from "react-router-dom";
 

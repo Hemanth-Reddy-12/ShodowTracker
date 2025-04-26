@@ -1,7 +1,11 @@
 import axios from "axios";
 import { create } from "zustand";
 
-export const API_URL = "http://localhost:3000/api";
+export const API_URL = 
+  import.meta.env.VITE_NODE_ENV === "production" 
+    ? import.meta.env.VITE_API_URL || "https://shadow-tracker.vercel.app/api"
+    : "http://localhost:3000/api";
+
 export const useAuthStore = create((set) => ({
   user: null,
   isAuthenticated: false,

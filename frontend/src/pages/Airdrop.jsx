@@ -2,9 +2,6 @@ import React, { useEffect } from "react";
 import { FaPlus } from "react-icons/fa6";
 
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
 import ProjectCard from "../components/ProjectCard";
 import { useProjectStore } from "@/store/projectStore";
 import { useNavigate } from "react-router-dom";
