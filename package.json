@@ -84,10 +84,12 @@
     "unpipe": "^1.0.0",
     "uuidv4": "^6.2.13",
     "vary": "^1.1.2",
-    "wrappy": "^1.0.2"
+    "wrappy": "^1.0.2",
+    "prisma": "^6.19.3"
   },
   "scripts": {
-    "dev": "nodemon backend/index.js"
+    "dev": "nodemon backend/index.js",
+    "postinstall": "prisma generate"
   },
   "repository": {
     "type": "git",
@@ -101,8 +103,5 @@
     "url": "https://github.com/Hemanth-Reddy-12/ShodowTracker/issues"
   },
   "homepage": "https://github.com/Hemanth-Reddy-12/ShodowTracker#readme",
-  "description": "",
-  "devDependencies": {
-    "prisma": "^6.19.3"
-  }
+  "description": ""
 }
