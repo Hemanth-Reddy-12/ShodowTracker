@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import usePageStore from "./pageStore";
 
-function PageTracker() {
+function RouteWatcher() {
   const location = useLocation();
   const setCurrentPage = usePageStore((state) => state.setCurrentPage);
   const toggleSidebar = usePageStore((state) => state.toggleSidebar);
@@ -10,10 +10,9 @@ function PageTracker() {
   useEffect(() => {
     setCurrentPage(location.pathname);
     toggleSidebar(false);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
+  }, [location.pathname, setCurrentPage, toggleSidebar]);
 
   return null; // This just runs logic, no UI
 }
 
-export default PageTracker;
+export default RouteWatcher;

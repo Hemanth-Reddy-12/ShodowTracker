@@ -77,6 +77,8 @@ export const useProjectStore = create((set) => ({
           link: data.link,
           type: data.type,
           status: data.status,
+          blockchain: data.blockchain,
+          image_url: data.img_url,
         },
         {
           withCredentials: true,
@@ -166,6 +168,75 @@ export const useProjectStore = create((set) => ({
           "Server Error",
       });
       throw error; // Re-throw to allow handling in the component
+    }
+  },
+
+  updateResource: async (data) => {
+    set({ isloading: true, error: null });
+    try {
+      const response = await axios.post(
+        `${API_URL}/crypto/updateresource`,
+        {
+          id: data.id,
+          name: data.name,
+          url: data.url,
+          resource_type: data.resource_type,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      set({ isloading: false });
+      return response.data;
+    } catch (error) {
+      console.log(
+        "Server Error:",
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          error.message ||
+          "Unknown error"
+      );
+      set({
+        isloading: false,
+        error:
+          error.response?.data?.error ||
+          error.response?.data?.message ||
+          error.message ||
+          "Server Error",
+      });
+      throw error;
+    }
+  },
+
+  deleteResource: async (id) => {
+    set({ isloading: true, error: null });
+    try {
+      const response = await axios.delete(
+        `${API_URL}/crypto/deleteresource`,
+        {
+          data: { id },
+          withCredentials: true,
+        }
+      );
+      set({ isloading: false });
+      return response.data;
+    } catch (error) {
+      console.log(
+        "Server Error:",
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          error.message ||
+          "Unknown error"
+      );
+      set({
+        isloading: false,
+        error:
+          error.response?.data?.error ||
+          error.response?.data?.message ||
+          error.message ||
+          "Server Error",
+      });
+      throw error;
     }
   },
 }));

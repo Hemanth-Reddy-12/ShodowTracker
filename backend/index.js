@@ -1,15 +1,17 @@
+import "./polyfill.js";
 import express from "express";
-import { dbConfig } from "./config/db.js";
 import dotenv from "dotenv";
 import router from "./routes/route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import mongoose from "mongoose";
+import { prisma } from "./lib/prisma.js";
+
+import { toNodeHandler } from "better-auth/node";
+import { auth } from "./lib/auth.js";
 
 dotenv.config();
 const app = express();
 app.use(cookieParser());
-app.use(express.json());
 
 // Update CORS configuration
 const allowedOrigins = [
@@ -34,6 +36,9 @@ app.use(
   })
 );
 
+app.all("/api/auth/*splat", toNodeHandler(auth));
+app.use(express.json());
+
 app.use("/api", router);
 
 // Add error handling for Vercel serverless functions
@@ -45,8 +50,8 @@ app.use((err, req, res, next) => {
 // Initialize DB connection for Vercel environment
 const initDbConnection = async () => {
   try {
-    await dbConfig();
-    console.log("Database connected successfully");
+    await prisma.$connect();
+    console.log("Database connected successfully via Prisma");
   } catch (error) {
     console.error("Database connection failed:", error.message);
   }
@@ -56,36 +61,47 @@ const initDbConnection = async () => {
 initDbConnection();
 
 // Root endpoint with DB connection status
-app.get("/", (req, res) => {
-  const dbStatus = mongoose.connection.readyState;
-
-  // Mongoose connection states: 0 = disconnected, 1 = connected, 2 = connecting, 3 = disconnecting
-  const connectionStatus = {
-    0: "Disconnected",
-    1: "Connected",
-    2: "Connecting",
-    3: "Disconnecting",
-  };
-
-  res.json({
-    message: "API is running... Welcome to Shadow Tracker API!",
-    databaseStatus: connectionStatus[dbStatus] || "Unknown",
-    isConnected: dbStatus === 1,
-    environment: process.env.NODE_ENV || "development",
-  });
+app.get("/", async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({
+      message: "API is running... Welcome to Shadow Tracker API!",
+      databaseStatus: "Connected",
+      isConnected: true,
+      environment: process.env.NODE_ENV || "development",
+    });
+  } catch (error) {
+    res.json({
+      message: "API is running... Welcome to Shadow Tracker API!",
+      databaseStatus: "Disconnected",
+      isConnected: false,
+      environment: process.env.NODE_ENV || "development",
+    });
+  }
 });
 
 // Add DB status endpoint
-app.get("/api/status", (req, res) => {
-  const dbStatus = mongoose.connection.readyState;
-  res.json({
-    database: {
-      status: dbStatus === 1 ? "connected" : "disconnected",
-      state: dbStatus,
-    },
-    api: "running",
-    timestamp: new Date(),
-  });
+app.get("/api/status", async (req, res) => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    res.json({
+      database: {
+        status: "connected",
+        state: 1,
+      },
+      api: "running",
+      timestamp: new Date(),
+    });
+  } catch (error) {
+    res.json({
+      database: {
+        status: "disconnected",
+        state: 0,
+      },
+      api: "running",
+      timestamp: new Date(),
+    });
+  }
 });
 
 // For local development

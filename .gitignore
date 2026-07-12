@@ -1,3 +1,5 @@
-node_modules
 .env
 .vercel
+.agents/
+.vscode/
+node_modules/

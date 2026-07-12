@@ -1,23 +1,20 @@
-import jwt from "jsonwebtoken";
+import { auth } from "../lib/auth.js";
 
-export const verifyCookie = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) {
-    return res
-      .status(401)
-      .json({ success: false, message: "unauthorized no token provided" });
-  }
+export const verifyCookie = async (req, res, next) => {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    if (!decoded) {
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    });
+    if (!session) {
       return res
         .status(401)
-        .json({ success: false, message: "unauthorized no token provided" });
+        .json({ success: false, message: "unauthorized no session found" });
     }
-    req.user = process.env.USER;
+    req.user = session.user.username || session.user.name;
+    req.session = session;
     next();
   } catch (error) {
-    console.log("Error in verifyToken", error);
+    console.log("Error in verifyCookie", error);
     return res.status(500).json({ success: false, message: "Server error" });
   }
 };
