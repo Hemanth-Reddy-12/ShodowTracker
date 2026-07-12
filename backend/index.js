@@ -63,7 +63,7 @@ initDbConnection();
 // Root endpoint with DB connection status
 app.get("/", async (req, res) => {
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await prisma.$runCommandRaw({ ping: 1 });
     res.json({
       message: "API is running... Welcome to Shadow Tracker API!",
       databaseStatus: "Connected",
@@ -83,7 +83,7 @@ app.get("/", async (req, res) => {
 // Add DB status endpoint
 app.get("/api/status", async (req, res) => {
   try {
-    await prisma.$queryRaw`SELECT 1`;
+    await prisma.$runCommandRaw({ ping: 1 });
     res.json({
       database: {
         status: "connected",
